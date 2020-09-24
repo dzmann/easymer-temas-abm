@@ -40,7 +40,7 @@ public class TemaTeorico extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!validarCampos()){
-                    JOptionPane.showMessageDialog(null, "ERROR", "Hay campos vacíos", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Hay campos vacíos", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }else{
                     TemaTeoricoDto temaTeoricoDto = new TemaTeoricoDto();
                     temaTeoricoDto.setId(idField.getText());
@@ -54,9 +54,9 @@ public class TemaTeorico extends JFrame {
                     boolean result = restCall.postTemaTeorico(temaTeoricoDto);
 
                     if(result){
-                        JOptionPane.showMessageDialog(null, "OK", "Se insertó correctamente el tema", JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Se insertó correctamente el tema", "OK", JOptionPane.PLAIN_MESSAGE);
                     }else{
-                        JOptionPane.showMessageDialog(null, "ERROR", "Ocurrió un error al guardar el tema", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el tema", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                     limpiarCampos();
                 }
