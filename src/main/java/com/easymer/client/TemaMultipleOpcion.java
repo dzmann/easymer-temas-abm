@@ -37,7 +37,7 @@ public class TemaMultipleOpcion extends JFrame {
         CANCELARButton.addActionListener(e -> dispose());
 
         AGREGAROPCIONButton.addActionListener(e -> {
-            AgregarOpcion frame = new AgregarOpcion("Crear Tema Teórico");
+            AgregarOpcion frame = new AgregarOpcion("Crear nueva opción.");
             frame.setFramePadre(getThis());
             frame.setVisible(true);
         });
