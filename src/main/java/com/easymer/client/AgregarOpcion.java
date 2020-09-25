@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AgregarOpcion extends JFrame{
-    private JTextField idField;
     private JTextArea descripcionField;
     private JButton AGREGARButton;
     private JButton CANCELARButton;
@@ -34,7 +33,7 @@ public class AgregarOpcion extends JFrame{
                 if(validarCampos()){
 
                     OpcionDto opcionDto = new OpcionDto();
-                    opcionDto.setId(idField.getText());
+                    opcionDto.setTag("OP" + (framePadre.obtenerCantOpciones() + 1));
                     opcionDto.setDescripcion(descripcionField.getText());
                     framePadre.agregarOpcion(opcionDto);
                     framePadre.refrescarOpciones();
@@ -52,7 +51,6 @@ public class AgregarOpcion extends JFrame{
     }
 
     private boolean validarCampos(){
-        return (idField.getText() != null && !idField.getText().isEmpty()) &&
-                (descripcionField.getText() != null && !descripcionField.getText().isEmpty());
+        return (descripcionField.getText() != null && !descripcionField.getText().isEmpty());
     }
 }

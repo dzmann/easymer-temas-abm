@@ -45,7 +45,7 @@ public class TemaMultipleOpcion extends JFrame {
 
         INSERTARButton.addActionListener(e -> {
 
-            Optional<OpcionDto> idMatch = opcionesDto.stream().filter(opcionDto -> correctaField.getText().equals(opcionDto.getId())).findAny();
+            Optional<OpcionDto> idMatch = opcionesDto.stream().filter(opcionDto -> correctaField.getText().equals(opcionDto.getTag())).findAny();
 
             if(!idMatch.isPresent()){
                 JOptionPane.showMessageDialog(null, "La opción correcta no se encuentra en el listado de opciones", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -87,6 +87,10 @@ public class TemaMultipleOpcion extends JFrame {
 
     public void agregarOpcion(OpcionDto opcionDto){
         this.opcionesDto.add(opcionDto);
+    }
+
+    public int obtenerCantOpciones(){
+        return this.opcionesDto.size();
     }
 
     public void refrescarOpciones(){
