@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TemaMultipleOpcion extends JFrame {
 
@@ -43,8 +44,12 @@ public class TemaMultipleOpcion extends JFrame {
         });
 
         INSERTARButton.addActionListener(e -> {
-            if(validarCampos()){
 
+            Optional<OpcionDto> idMatch = opcionesDto.stream().filter(opcionDto -> correctaField.getText().equals(opcionDto.getId())).findAny();
+
+            if(!idMatch.isPresent()){
+                JOptionPane.showMessageDialog(null, "La opción correcta no se encuentra en el listado de opciones", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }else if (validarCampos()){
                 TemaMultipleOpcionDto temaMultipleOpcionDto = new TemaMultipleOpcionDto();
                 temaMultipleOpcionDto.setId(idField.getText());
                 temaMultipleOpcionDto.setCorrecta(correctaField.getText());
@@ -58,12 +63,12 @@ public class TemaMultipleOpcion extends JFrame {
                 RestCall restCall = new RestCall();
 
                 try {
-                    boolean result = restCall.postTemaMultipleOpcion(temaMultipleOpcionDto);
+                    TemaResponse result = restCall.postTemaMultipleOpcion(temaMultipleOpcionDto);
 
-                    if(result){
+                    if(result.getStatus() == 201){
                         JOptionPane.showMessageDialog(null, "Se insertó correctamente el tema", "OK", JOptionPane.PLAIN_MESSAGE);
                     }else{
-                        JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el tema", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, result.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } catch (JsonProcessingException ex) {

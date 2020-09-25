@@ -51,14 +51,14 @@ public class TemaTeorico extends JFrame {
                     temaTeoricoDto.setTipo(TipoTema.TEORICO.name());
 
                     RestCall restCall = new RestCall();
-                    boolean result = restCall.postTemaTeorico(temaTeoricoDto);
+                    TemaResponse result = restCall.postTemaTeorico(temaTeoricoDto);
 
-                    if(result){
+                    if(result.getStatus() == 201){
                         JOptionPane.showMessageDialog(null, "Se insertó correctamente el tema", "OK", JOptionPane.PLAIN_MESSAGE);
+                        limpiarCampos();
                     }else{
-                        JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el tema", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, result.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
-                    limpiarCampos();
                 }
             }
         });
