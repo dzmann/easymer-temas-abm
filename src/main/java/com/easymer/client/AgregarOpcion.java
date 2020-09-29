@@ -20,28 +20,20 @@ public class AgregarOpcion extends JFrame{
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        CANCELARButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        CANCELARButton.addActionListener(e -> dispose());
+
+        AGREGARButton.addActionListener(e -> {
+            if(validarCampos()){
+
+                OpcionDto opcionDto = new OpcionDto();
+                opcionDto.setId("OP" + (framePadre.obtenerCantOpciones() + 1));
+                opcionDto.setDescripcion(descripcionField.getText());
+                framePadre.agregarOpcion(opcionDto);
+                framePadre.refrescarOpciones();
                 dispose();
-            }
-        });
 
-        AGREGARButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(validarCampos()){
-
-                    OpcionDto opcionDto = new OpcionDto();
-                    opcionDto.setTag("OP" + (framePadre.obtenerCantOpciones() + 1));
-                    opcionDto.setDescripcion(descripcionField.getText());
-                    framePadre.agregarOpcion(opcionDto);
-                    framePadre.refrescarOpciones();
-                    dispose();
-
-                }else{
-                    JOptionPane.showMessageDialog(null, "Hay campos vacíos", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Hay campos vacíos", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
     }

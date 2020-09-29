@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OpcionDto {
-    private String tag;
+    private String id;
     private String descripcion;
 
     @Override
     public String toString() {
-        return "TAG = " + tag + "\n" +
+        return "ID = " + id + "\n" +
                 "DESCRIPCION = " + descripcion + "\n" +
                 "---------------";
     }
