@@ -49,6 +49,7 @@ public class TemaTeorico extends JFrame {
                     temaTeoricoDto.setDescripcion(descripcionField.getText());
                     temaTeoricoDto.setOrden(Integer.valueOf(ordenField.getText()));
                     temaTeoricoDto.setTipo(TipoTema.TEORICO.name());
+                    temaTeoricoDto.setImagen(imageField.getText().getBytes());
 
                     RestCall restCall = new RestCall();
                     TemaResponse result = restCall.postTemaTeorico(temaTeoricoDto);
