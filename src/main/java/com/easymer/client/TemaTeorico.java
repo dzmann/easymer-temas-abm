@@ -28,6 +28,9 @@ public class TemaTeorico extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+
+
+
         CANCELARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,7 +52,7 @@ public class TemaTeorico extends JFrame {
                     temaTeoricoDto.setDescripcion(descripcionField.getText());
                     temaTeoricoDto.setOrden(Integer.valueOf(ordenField.getText()));
                     temaTeoricoDto.setTipo(TipoTema.TEORICO.name());
-                    temaTeoricoDto.setImagen(imageField.getText().getBytes());
+                    temaTeoricoDto.setImagen(imageField.getText());
 
                     RestCall restCall = new RestCall();
                     TemaResponse result = restCall.postTemaTeorico(temaTeoricoDto);

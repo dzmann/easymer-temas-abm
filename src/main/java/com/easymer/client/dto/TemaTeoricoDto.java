@@ -12,6 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TemaTeoricoDto extends AbstractTemaDto implements Serializable {
 
-    private byte[] imagen;
+    private String imagen;
 
 }
