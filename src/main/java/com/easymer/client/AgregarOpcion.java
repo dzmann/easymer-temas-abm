@@ -3,14 +3,13 @@ package com.easymer.client;
 import com.easymer.client.dto.OpcionDto;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AgregarOpcion extends JFrame{
     private JTextArea descripcionField;
     private JButton AGREGARButton;
     private JButton CANCELARButton;
     private JPanel agregarOpcionPanel;
+    private JTextArea imagenField;
     private TemaMultipleOpcion framePadre;
 
     public AgregarOpcion(String title){
@@ -28,6 +27,7 @@ public class AgregarOpcion extends JFrame{
                 OpcionDto opcionDto = new OpcionDto();
                 opcionDto.setId("OP" + (framePadre.obtenerCantOpciones() + 1));
                 opcionDto.setDescripcion(descripcionField.getText());
+                opcionDto.setImagen(imagenField.getText());
                 framePadre.agregarOpcion(opcionDto);
                 framePadre.refrescarOpciones();
                 dispose();

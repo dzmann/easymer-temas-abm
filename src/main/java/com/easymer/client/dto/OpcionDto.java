@@ -10,6 +10,7 @@ import lombok.Setter;
 public class OpcionDto {
     private String id;
     private String descripcion;
+    private String imagen;
 
     @Override
     public String toString() {
