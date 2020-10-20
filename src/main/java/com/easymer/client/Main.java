@@ -11,6 +11,7 @@ public class Main {
     private JButton temaMúltipleOpciónButton;
     private JButton temaMerButton;
     private JButton salirButton;
+    private JButton eliminarBtn;
 
     public Main() {
         temaTeóricoButton.addActionListener(e -> {
@@ -30,6 +31,14 @@ public class Main {
                 jFrame.dispose();
             }
         });
+        eliminarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new EliminarTema("Eliminar tema por ID");
+                frame.setVisible(true);
+            }
+        });
+
     }
 
     public static void main(String[] args) {

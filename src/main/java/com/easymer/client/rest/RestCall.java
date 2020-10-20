@@ -54,4 +54,19 @@ public class RestCall {
 
         return temaResponse;
     }
+
+    public TemaResponse borrarTema(String id) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Response response = client.target(baseUrl).path("borrar").path(id).request(MediaType.APPLICATION_JSON).delete();
+
+        String body = response.readEntity(String.class);
+
+        System.out.println("Response => " + body);
+
+        TemaResponse temaResponse = objectMapper.readValue(body, TemaResponse.class);
+
+        return temaResponse;
+    }
 }
