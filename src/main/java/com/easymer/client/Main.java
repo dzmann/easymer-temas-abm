@@ -31,6 +31,12 @@ public class Main {
                 jFrame.dispose();
             }
         });
+        temaMerButton.addActionListener(e -> {
+
+            JFrame jFrame = new TemaMer("Crear Tema Mer");
+            jFrame.setVisible(true);
+
+        });
         eliminarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
