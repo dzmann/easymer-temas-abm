@@ -72,6 +72,7 @@ public class TemaMer extends JFrame {
                     if((String)tipoMerCombo.getSelectedItem() == COMPLETAR && validarMer(merCorrectoField.getText()) && validarMer(merIncompletoField.getText())){
                         result = restCall.postTemaMer(temaMerDto);
                     }else if((String)tipoMerCombo.getSelectedItem() == VERIFICAR && validarMer(merCorrectoField.getText())) {
+                        temaMerDto.setMerIncompleto("[]");
                         result = restCall.postTemaMer(temaMerDto);
                     }else{
                         JOptionPane.showMessageDialog(null, "JSON Inválido", "ERROR", JOptionPane.ERROR_MESSAGE);
