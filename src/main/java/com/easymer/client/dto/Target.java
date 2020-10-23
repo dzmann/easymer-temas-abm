@@ -1,5 +1,6 @@
 package com.easymer.client.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,6 @@ import lombok.Setter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Setter
-public class MerAttribute {
-    private String title;
-    private Position position;
+public class Target {
+    private String id;
 }

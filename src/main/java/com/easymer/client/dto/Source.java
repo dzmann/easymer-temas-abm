@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Setter
-public class MerAttribute {
-    private String title;
-    private Position position;
+public class Source {
+    private String id;
 }
