@@ -1,11 +1,13 @@
 package com.easymer.client.rest;
 
 import com.easymer.client.TemaResponse;
+import com.easymer.client.dto.TemaDto;
 import com.easymer.client.dto.TemaMerDto;
 import com.easymer.client.dto.TemaMultipleOpcionDto;
 import com.easymer.client.dto.TemaTeoricoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.glassfish.jersey.client.ClientConfig;
 
 import javax.ws.rs.client.*;
@@ -14,7 +16,7 @@ import javax.ws.rs.core.Response;
 
 public class RestCall {
 
-    private static final String baseUrl = "http://localhost:8080/temas";
+    private static final String baseUrl = "http://localhost:8080/temas/abm";
     private static Client client;
 
     public RestCall(){
@@ -87,4 +89,40 @@ public class RestCall {
 
         return temaResponse;
     }
+
+    public TemaResponse buscarTema(String id) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Response response = client.target(baseUrl).path("buscar").path(id).request(MediaType.APPLICATION_JSON).get();
+
+        String body = response.readEntity(String.class);
+
+        System.out.println("Response => " + body);
+
+        TemaResponse temaResponse = objectMapper.readValue(body, TemaResponse.class);
+
+        return temaResponse;
+    }
+
+    public TemaResponse updateTema(TemaDto temaDto) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(String.class, new CustomDeserializer());
+        objectMapper.registerModule(module);
+        String jsonStr = objectMapper.writeValueAsString(temaDto);
+
+        System.out.println("WILL POST => " + jsonStr);
+
+        Response response = client.target(baseUrl).path("actualizar").path(temaDto.getId()).request(MediaType.APPLICATION_JSON).put(Entity.entity(jsonStr, MediaType.APPLICATION_JSON));
+
+        String body = response.readEntity(String.class);
+
+        System.out.println("Response => " + body);
+
+        TemaResponse temaResponse = objectMapper.readValue(body, TemaResponse.class);
+
+        return temaResponse;
+    }
+
 }

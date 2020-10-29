@@ -27,6 +27,7 @@ public class TemaMer extends JFrame {
     private JTextArea merIncompletoField;
     private JButton insertarBtn;
     private JButton cancelarBtn;
+    private String operation = "INSERT";
 
     private static final String COMPLETAR = "COMPLETAR";
     private static final String VERIFICAR = "VERIFICAR";
@@ -69,24 +70,75 @@ public class TemaMer extends JFrame {
                     RestCall restCall = new RestCall();
                     TemaResponse result = null;
 
-                    if((String)tipoMerCombo.getSelectedItem() == COMPLETAR && validarMer(merCorrectoField.getText()) && validarMer(merIncompletoField.getText())){
-                        result = restCall.postTemaMer(temaMerDto);
-                    }else if((String)tipoMerCombo.getSelectedItem() == VERIFICAR && validarMer(merCorrectoField.getText())) {
-                        temaMerDto.setMerIncompleto("[]");
-                        result = restCall.postTemaMer(temaMerDto);
+                    if(operation.equals("INSERT")){
+                        result = insertTemaMer(restCall, temaMerDto);
                     }else{
-                        JOptionPane.showMessageDialog(null, "JSON Inválido", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        result = updateTemaMer(restCall, temaMerDto);
                     }
 
-                    if(result.getStatus() == 201){
+
+                    if(result.getStatus() == 201 && operation.equals("INSERT")){
                         JOptionPane.showMessageDialog(null, "Se insertó correctamente el tema", "OK", JOptionPane.PLAIN_MESSAGE);
                         limpiarCampos();
+                    }else if(result.getStatus() == 200 && operation.equals("UPDATE")){
+                        limpiarCampos();
+                        idField.setEditable(true);
+                        operation = "INSERT";
+                        String[] options = {"Editar Otro", "Menú principal"};
+                        int x = JOptionPane.showOptionDialog(null, "Se actualizó correctamente el tema",
+                                "Editar Tema",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                        if(x == 0){
+                            EditarTema editarTema = new EditarTema("Editar Tema por ID");
+                            dispose();
+                        }else{
+                            dispose();
+                        }
                     }else{
                         JOptionPane.showMessageDialog(null, result.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
         });
+    }
+
+    public TemaResponse updateTemaMer(RestCall restCall, TemaMerDto temaMerDto) throws JsonProcessingException {
+        TemaResponse result = null;
+        if(operation.equals("UPDATE") && (String)tipoMerCombo.getSelectedItem() == COMPLETAR && validarMer(merCorrectoField.getText()) && validarMer(merIncompletoField.getText())){
+            result = restCall.updateTema(temaMerDto);
+        }else if(operation.equals("UPDATE") && (String)tipoMerCombo.getSelectedItem() == VERIFICAR && validarMer(merCorrectoField.getText())) {
+            temaMerDto.setMerIncompleto("[]");
+            result = restCall.updateTema(temaMerDto);
+        }else{
+            JOptionPane.showMessageDialog(null, "JSON Inválido", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return result;
+    }
+
+    private TemaResponse insertTemaMer(RestCall restCall, TemaMerDto temaMerDto) throws JsonProcessingException {
+        TemaResponse result = null;
+        if((String)tipoMerCombo.getSelectedItem() == COMPLETAR && validarMer(merCorrectoField.getText()) && validarMer(merIncompletoField.getText())){
+            result = restCall.postTemaMer(temaMerDto);
+        }else if((String)tipoMerCombo.getSelectedItem() == VERIFICAR && validarMer(merCorrectoField.getText())) {
+            temaMerDto.setMerIncompleto("[]");
+            result = restCall.postTemaMer(temaMerDto);
+        }else{
+            JOptionPane.showMessageDialog(null, "JSON Inválido", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return result;
+    }
+
+    public void updateTema(TemaMerDto temaTeorico){
+        this.operation = "UPDATE";
+        idField.setText(temaTeorico.getId().toUpperCase());
+        tituloField.setText(temaTeorico.getTitulo());
+        descripcionField.setText(temaTeorico.getDescripcion());
+        contenidoField.setText(temaTeorico.getContenido());
+        tipoMerCombo.setSelectedItem(temaTeorico.getTipoMer());
+        ordenField.setText(String.valueOf(temaTeorico.getOrden()));
+        merCorrectoField.setText(temaTeorico.getMerCorrecto());
+        merIncompletoField.setText(temaTeorico.getMerIncompleto());
+        idField.setEditable(false);
     }
 
 

@@ -24,7 +24,7 @@ public class TemaMultipleOpcion extends JFrame {
     private JButton INSERTARButton;
     private JButton AGREGAROPCIONButton;
     private JTextArea opcionesArea;
-
+    private String operation = "INSERT";
 
     private List<OpcionDto> opcionesDto = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class TemaMultipleOpcion extends JFrame {
                 JOptionPane.showMessageDialog(null, "La opción correcta no se encuentra en el listado de opciones", "ERROR", JOptionPane.ERROR_MESSAGE);
             }else if (validarCampos()){
                 TemaMultipleOpcionDto temaMultipleOpcionDto = new TemaMultipleOpcionDto();
-                temaMultipleOpcionDto.setId(idField.getText());
+                temaMultipleOpcionDto.setId(idField.getText().toUpperCase());
                 temaMultipleOpcionDto.setCorrecta(correctaField.getText());
                 temaMultipleOpcionDto.setOpciones(this.opcionesDto);
                 temaMultipleOpcionDto.setContenido(contenidoField.getText());
@@ -61,13 +61,32 @@ public class TemaMultipleOpcion extends JFrame {
                 temaMultipleOpcionDto.setTipo(TipoTema.MULTIPLE_OPCION.name());
 
                 RestCall restCall = new RestCall();
+                TemaResponse result = null;
+
 
                 try {
-                    TemaResponse result = restCall.postTemaMultipleOpcion(temaMultipleOpcionDto);
-
-                    if(result.getStatus() == 201){
-                        JOptionPane.showMessageDialog(null, "Se insertó correctamente el tema", "OK", JOptionPane.PLAIN_MESSAGE);
+                    if(operation.equals("UPDATE")){
+                        result = restCall.updateTema(temaMultipleOpcionDto);
                     }else{
+                        result = restCall.postTemaMultipleOpcion(temaMultipleOpcionDto);
+                    }
+
+                    if(result.getStatus() == 201 && operation.equals("INSERT")){
+                        JOptionPane.showMessageDialog(null, "Se insertó correctamente el tema", "OK", JOptionPane.PLAIN_MESSAGE);
+                    }else if(result.getStatus() == 200 && operation.equals("UPDATE")){
+                        idField.setEditable(true);
+                        operation = "INSERT";
+                        String[] options = {"Editar Otro", "Menú principal"};
+                        int x = JOptionPane.showOptionDialog(null, "Se actualizó correctamente el tema",
+                                "Editar Tema",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                        if(x == 0){
+                            EditarTema editarTema = new EditarTema("Editar Tema por ID");
+                            dispose();
+                        }else{
+                            dispose();
+                        }
+                    } else{
                         JOptionPane.showMessageDialog(null, result.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
 
@@ -79,6 +98,21 @@ public class TemaMultipleOpcion extends JFrame {
                 JOptionPane.showMessageDialog(null, "Hay campos vacíos", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
+    }
+
+    public void updateTema(TemaMultipleOpcionDto temaTeorico){
+        this.operation = "UPDATE";
+        idField.setText(temaTeorico.getId());
+        tituloField.setText(temaTeorico.getTitulo());
+        descripcionField.setText(temaTeorico.getDescripcion());
+        contenidoField.setText(temaTeorico.getContenido());
+        ordenField.setText(String.valueOf(temaTeorico.getOrden()));
+        correctaField.setText(temaTeorico.getCorrecta());
+        for (OpcionDto op: temaTeorico.getOpciones()) {
+            agregarOpcion(op);
+        }
+        refrescarOpciones();
+        idField.setEditable(false);
     }
 
     private TemaMultipleOpcion getThis(){

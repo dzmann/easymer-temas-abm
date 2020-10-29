@@ -12,6 +12,7 @@ public class Main {
     private JButton temaMerButton;
     private JButton salirButton;
     private JButton eliminarBtn;
+    private JButton editarTemaButton;
 
     public Main() {
         temaTeóricoButton.addActionListener(e -> {
@@ -37,6 +38,15 @@ public class Main {
             jFrame.setVisible(true);
 
         });
+
+        editarTemaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new EditarTema("Buscar y editar Tema por ID");
+                frame.setVisible(true);
+            }
+        });
+
         eliminarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
