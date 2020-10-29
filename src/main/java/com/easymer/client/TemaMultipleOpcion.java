@@ -7,9 +7,11 @@ import com.easymer.client.rest.RestCall;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TemaMultipleOpcion extends JFrame {
 
@@ -24,6 +26,9 @@ public class TemaMultipleOpcion extends JFrame {
     private JButton INSERTARButton;
     private JButton AGREGAROPCIONButton;
     private JTextArea opcionesArea;
+    private JButton BORRAROPCIONButton;
+    private JTextField idOpcionField;
+    private JButton VEROPCIÓNButton;
     private String operation = "INSERT";
 
     private List<OpcionDto> opcionesDto = new ArrayList<>();
@@ -41,6 +46,23 @@ public class TemaMultipleOpcion extends JFrame {
             AgregarOpcion frame = new AgregarOpcion("Crear nueva opción.");
             frame.setFramePadre(getThis());
             frame.setVisible(true);
+        });
+
+        VEROPCIÓNButton.addActionListener(e -> {
+            Optional<OpcionDto> found = obtenerOpcion(idOpcionField.getText());
+            if(found.isPresent()){
+                try {
+                    VerOpcion verOpcion = new VerOpcion("Ver detalles de la opción", found.get());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        BORRAROPCIONButton.addActionListener(e -> {
+            if(!idOpcionField.getText().equals("") || idOpcionField.getText() != null ){
+                borrarOpcion(idOpcionField.getText());
+            }
         });
 
         INSERTARButton.addActionListener(e -> {
@@ -100,6 +122,11 @@ public class TemaMultipleOpcion extends JFrame {
         });
     }
 
+    private void borrarOpcion(String idOpcion){
+        opcionesDto = opcionesDto.stream().filter(opcionDto -> !opcionDto.getId().equals(idOpcion)).collect(Collectors.toList());
+        refrescarOpciones();
+    }
+
     public void updateTema(TemaMultipleOpcionDto temaTeorico){
         this.operation = "UPDATE";
         idField.setText(temaTeorico.getId());
@@ -115,12 +142,17 @@ public class TemaMultipleOpcion extends JFrame {
         idField.setEditable(false);
     }
 
+    private Optional<OpcionDto> obtenerOpcion(String id){
+       return opcionesDto.stream().filter(opcionDto -> opcionDto.getId().equals(id)).findAny();
+    }
+
     private TemaMultipleOpcion getThis(){
         return this;
     }
 
     public void agregarOpcion(OpcionDto opcionDto){
         this.opcionesDto.add(opcionDto);
+        refrescarOpciones();
     }
 
     public int obtenerCantOpciones(){
@@ -130,6 +162,7 @@ public class TemaMultipleOpcion extends JFrame {
     public void refrescarOpciones(){
         StringBuilder stringBuilder = new StringBuilder();
         opcionesDto.forEach(opcionDto -> {
+            opcionDto.setId("OP" + (opcionesDto.indexOf(opcionDto) + 1));
             stringBuilder.append(opcionDto + "\n");
         });
         opcionesArea.setText(stringBuilder.toString());

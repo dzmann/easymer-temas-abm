@@ -30,11 +30,9 @@ public class AgregarOpcion extends JFrame{
             if(validarCampos()){
 
                 OpcionDto opcionDto = new OpcionDto();
-                opcionDto.setId("OP" + (framePadre.obtenerCantOpciones() + 1));
                 opcionDto.setDescripcion(descripcionField.getText());
                 opcionDto.setImagen(imagenField.getText());
                 framePadre.agregarOpcion(opcionDto);
-                framePadre.refrescarOpciones();
                 dispose();
 
             }else{
@@ -51,12 +49,7 @@ public class AgregarOpcion extends JFrame{
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                try {
-                    imageLabel.setIcon(Utils.getImagen(imagenField.getText().getBytes()));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "ERROR DECODIFICANDO LA IMAGEN", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
+                imageLabel.setIcon(Utils.getImagen(imagenField.getText().getBytes()));
             }
 
             @Override

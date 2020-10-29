@@ -9,10 +9,21 @@ import java.util.Base64;
 
 public class Utils {
 
-    public static ImageIcon getImagen(byte[] imageBytes) throws IOException {
+    public static ImageIcon getImagen(byte[] imageBytes) {
         byte[] btDataFile = Base64.getDecoder().decode(imageBytes);
-        BufferedImage image = ImageIO.read(new ByteArrayInputStream(btDataFile));
-        ImageIcon imageIcon = new ImageIcon(image);
+        BufferedImage image = null;
+        ImageIcon imageIcon = null;
+        if(imageBytes.length == 0){
+            return null;
+        }
+        try {
+            image = ImageIO.read(new ByteArrayInputStream(btDataFile));
+            imageIcon = new ImageIcon(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return imageIcon;
     }
 }
