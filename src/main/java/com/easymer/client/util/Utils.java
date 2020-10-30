@@ -19,9 +19,8 @@ public class Utils {
         try {
             image = ImageIO.read(new ByteArrayInputStream(btDataFile));
             imageIcon = new ImageIcon(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+            return imageIcon;
         }
 
         return imageIcon;
