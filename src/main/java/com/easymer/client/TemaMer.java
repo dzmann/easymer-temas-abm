@@ -57,7 +57,7 @@ public class TemaMer extends JFrame {
                     JOptionPane.showMessageDialog(null, "Hay campos vacíos", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }else{
                     TemaMerDto temaMerDto = new TemaMerDto();
-                    temaMerDto.setId(idField.getText());
+                    temaMerDto.setId(idField.getText().toUpperCase());
                     temaMerDto.setContenido(contenidoField.getText());
                     temaMerDto.setTitulo(tituloField.getText());
                     temaMerDto.setDescripcion(descripcionField.getText());
