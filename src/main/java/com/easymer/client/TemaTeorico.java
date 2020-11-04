@@ -27,8 +27,9 @@ public class TemaTeorico extends JFrame {
     private JButton CANCELARButton;
     private JPanel teoricoPanel;
     private JTextField ordenField;
-    private JLabel imageLabel;
+    private JButton verImagenBtn;
     private String operation = "INSERT";
+    private VerImagen verImagenFrame;
 
     public TemaTeorico(String title){
         super(title);
@@ -37,17 +38,22 @@ public class TemaTeorico extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+        verImagenFrame = new VerImagen("Ver imagen");
+
         imageField.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                imageLabel.setIcon(null);
+                verImagenFrame.setImagen(null);
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
+
+
+
                 try {
-                    imageLabel.setIcon(getImagen(imageField.getText().getBytes()));
+                    verImagenFrame.setImagen(getImagen(imageField.getText().getBytes()));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "ERROR DECODIFICANDO LA IMAGEN", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -57,6 +63,13 @@ public class TemaTeorico extends JFrame {
             @Override
             public void changedUpdate(DocumentEvent arg0) {
 
+            }
+        });
+
+        verImagenBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verImagenFrame.setVisible(true);
             }
         });
 
@@ -142,7 +155,7 @@ public class TemaTeorico extends JFrame {
         contenidoField.setText(temaTeorico.getContenido());
         ordenField.setText(String.valueOf(temaTeorico.getOrden()));
         imageField.setText(temaTeorico.getImagen());
-        imageLabel.setIcon(getImagen(temaTeorico.getImagen().getBytes()));
+
         idField.setEditable(false);
     }
 

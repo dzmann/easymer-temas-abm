@@ -6,7 +6,7 @@ import com.easymer.client.util.Utils;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.io.IOException;
+
 
 public class AgregarOpcion extends JFrame{
     private JTextArea descripcionField;
@@ -14,8 +14,9 @@ public class AgregarOpcion extends JFrame{
     private JButton CANCELARButton;
     private JPanel agregarOpcionPanel;
     private JTextArea imagenField;
-    private JLabel imageLabel;
+    private JButton verImagenButton;
     private TemaMultipleOpcion framePadre;
+    private VerImagen verImagenFrame;
 
     public AgregarOpcion(String title){
         super(title);
@@ -23,6 +24,8 @@ public class AgregarOpcion extends JFrame{
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+        verImagenFrame = new VerImagen("Ver Imagen");
 
         CANCELARButton.addActionListener(e -> dispose());
 
@@ -40,16 +43,18 @@ public class AgregarOpcion extends JFrame{
             }
         });
 
+        verImagenButton.addActionListener(e -> verImagenFrame.setVisible(true));
+
         imagenField.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                imageLabel.setIcon(null);
+                verImagenFrame.setImagen(null);
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                imageLabel.setIcon(Utils.getImagen(imagenField.getText().getBytes()));
+                verImagenFrame.setImagen(Utils.getImagen(imagenField.getText().getBytes()));
             }
 
             @Override
