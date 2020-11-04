@@ -155,7 +155,8 @@ public class TemaMer extends JFrame {
     private boolean validarTipoMer(){
         String tipoMer = (String) tipoMerCombo.getSelectedItem();
         if(tipoMer == COMPLETAR){
-            return (merIncompletoField.getText() != null && !merIncompletoField.getText().isEmpty());
+            return (merIncompletoField.getText() != null && !merIncompletoField.getText().isEmpty()) &&
+                    (merCorrectoField.getText() != null && !merCorrectoField.getText().isEmpty());
         }
         return true;
     }
